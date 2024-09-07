@@ -3,6 +3,7 @@ import random
 import numpy as np
 from collections import defaultdict
 
+
 class Pride(list):
     """
     This class is inherited from a python list and stores a list of Carviz on the same cell.
@@ -30,12 +31,15 @@ class Pride(list):
         if len(prides) < 2:
             return prides
 
-        median_social_attitudes = self._calculate_median_social_attitudes(prides, cellsList)
+        median_social_attitudes = self._calculate_median_social_attitudes(
+            prides, cellsList)
         winner_index = self._determine_winner(median_social_attitudes)
-        remaining_prides = [pride for i, pride in enumerate(prides) if i != winner_index]
+        remaining_prides = [pride for i, pride in enumerate(
+            prides) if i != winner_index]
 
         if len(remaining_prides) > 1:
-            remaining_prides = self._join_prides_if_possible(remaining_prides, cellsList)
+            remaining_prides = self._join_prides_if_possible(
+                remaining_prides, cellsList)
 
         return self._create_new_pride(remaining_prides)
 
@@ -54,7 +58,8 @@ class Pride(list):
         return random.choices(range(len(median_social_attitudes)), k=1)[0]
 
     def _join_prides_if_possible(self, prides, cellsList):
-        median_social_attitudes = self._calculate_median_social_attitudes(prides, cellsList)
+        median_social_attitudes = self._calculate_median_social_attitudes(
+            prides, cellsList)
         join_threshold = 10
         if all(attitude >= join_threshold for attitude in median_social_attitudes):
             joined_pride = Pride(self.row, self.column)
@@ -80,9 +85,10 @@ class Pride(list):
 
     def _handle_carviz_movement(self, carv, cellsList):
         population = cellsList[self.row][self.column].lenOfErbast()
-        social_attitude = self._calculate_individual_social_attitude(carv, cellsList)
+        social_attitude = self._calculate_individual_social_attitude(
+            carv, cellsList)
         movement_coords = carv.decideMovement(cellsList, social_attitude >= 50)
-        
+
         if np.array_equal(movement_coords, [self.row, self.column]):
             carv.hasMoved = False
         else:

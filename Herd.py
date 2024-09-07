@@ -16,9 +16,12 @@ class Herd(list):
         herd_coords = np.array([self.row, self.column])
 
         for erbast in self:
-            socialAttitude = self._calculate_social_attitude(population, erbast.energy)
-            movementCoords = erbast.decideMovement(cellsList, socialAttitude >= 50)
-            self._handle_erbast_movement(erbast, movementCoords, herd_coords, cellsList)
+            socialAttitude = self._calculate_social_attitude(
+                population, erbast.energy)
+            movementCoords = erbast.decideMovement(
+                cellsList, socialAttitude >= 50)
+            self._handle_erbast_movement(
+                erbast, movementCoords, herd_coords, cellsList)
 
     @staticmethod
     def _calculate_social_attitude(population, energy):
@@ -35,10 +38,12 @@ class Herd(list):
     def herdGraze(self, listOfCells):
         starving_erbasts = self._get_starving_erbasts()
         vegetob_density = listOfCells[self.row][self.column].vegetob.density
-        energy_to_eat = self._calculate_energy_to_eat(starving_erbasts, vegetob_density)
+        energy_to_eat = self._calculate_energy_to_eat(
+            starving_erbasts, vegetob_density)
 
         erbasts_in_cell = listOfCells[self.row][self.column].erbast
-        self._perform_grazing(starving_erbasts, erbasts_in_cell, vegetob_density, energy_to_eat, listOfCells)
+        self._perform_grazing(starving_erbasts, erbasts_in_cell,
+                              vegetob_density, energy_to_eat, listOfCells)
 
     def _get_starving_erbasts(self):
         return [erb_idx for erb_idx, erb in enumerate(self) if erb.energy <= 40 and not erb.hasMoved]
@@ -49,9 +54,11 @@ class Herd(list):
 
     def _perform_grazing(self, starving_erbasts, erbasts_in_cell, vegetob_density, energy_to_eat, listOfCells):
         if len(starving_erbasts) < vegetob_density:
-            self._graze_starving_erbasts(starving_erbasts, erbasts_in_cell, energy_to_eat, listOfCells)
+            self._graze_starving_erbasts(
+                starving_erbasts, erbasts_in_cell, energy_to_eat, listOfCells)
         elif len(starving_erbasts) > vegetob_density:
-            self._graze_limited_erbasts(vegetob_density, erbasts_in_cell, energy_to_eat, listOfCells)
+            self._graze_limited_erbasts(
+                vegetob_density, erbasts_in_cell, energy_to_eat, listOfCells)
         else:
             self._graze_all_erbasts(energy_to_eat, listOfCells)
 
