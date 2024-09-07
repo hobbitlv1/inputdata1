@@ -1,9 +1,10 @@
 from constants import GREEN, RESET
 import pickle
 
+
 class DataPersistence:
 
-    def __init__(self, interval, num_cells, num_carviz, num_erbast, lft_carviz, lft_erbast, 
+    def __init__(self, interval, num_cells, num_carviz, num_erbast, lft_carviz, lft_erbast,
                  scl_water, run_flag, title, car_max, erb_max, hunt_tot):
         self.interval = interval
         self.num_cells = num_cells
@@ -50,7 +51,8 @@ class DataPersistence:
         self._save_to_file(updated_values)
         print(f"{GREEN}Simulation data saved successfully.{RESET}\n")
 
-    def _load_previous_data(self):
+    @staticmethod
+    def _load_previous_data():
         try:
             with open('simulation_data.pickle', 'rb') as file:
                 data = pickle.load(file)
@@ -58,7 +60,8 @@ class DataPersistence:
         except FileNotFoundError:
             return {}
 
-    def _save_to_file(self, data):
+    @staticmethod
+    def _save_to_file(data):
         with open('simulation_data.pickle', 'wb') as file:
             pickle.dump(data, file)
 

@@ -32,7 +32,8 @@ class Cell:
         if self.erbast or self.pride:
             kernel = self._get_kernel(listOfVegetobs)
             if len(kernel) == 8:
-                vegetob_full_density_counter = self._count_full_density_vegetobs(kernel, listOfVegetobs)
+                vegetob_full_density_counter = self._count_full_density_vegetobs(
+                    kernel, listOfVegetobs)
                 if vegetob_full_density_counter == 8:
                     self._clear_creatures()
 
@@ -40,9 +41,10 @@ class Cell:
         creature = self.erbast[0] if self.erbast else self.pride[0] if self.pride else None
         return creature.get_adjacent_cells(self.row, self.column) if creature else []
 
-    def _count_full_density_vegetobs(self, kernel, listOfVegetobs):
-        return sum(1 for row, col in kernel 
-                   if listOfVegetobs[row][col].vegetob and 
+    @staticmethod
+    def _count_full_density_vegetobs(kernel, listOfVegetobs):
+        return sum(1 for row, col in kernel
+                   if listOfVegetobs[row][col].vegetob and
                    listOfVegetobs[row][col].vegetob.density == 100)
 
     def _clear_creatures(self):
@@ -59,6 +61,3 @@ class Cell:
 
     def __repr__(self):
         return self.__str__()
-
-
-
