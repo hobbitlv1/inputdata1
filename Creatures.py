@@ -1,6 +1,7 @@
 import random
 import numpy as np
 
+
 class Creatures:
     NUM_CELLS = None
 
@@ -38,6 +39,7 @@ class Creatures:
     def column(self, newColumn):
         self._column = newColumn
 
+
 class Vegetob(Creatures):
     def __init__(self):
         super().__init__()
@@ -57,6 +59,7 @@ class Vegetob(Creatures):
     def grow(self):
         if self.density < 100:
             self.density += 1
+
 
 class Erbast(Creatures):
     def __init__(self, lifetime=10):
@@ -148,6 +151,7 @@ class Erbast(Creatures):
         energyToEat = min(100 - self.energy, amountToEat)
         self.energy += energyToEat
         listOfVegetobs[self.row][self.column].vegetob.density -= energyToEat
+
 
 class Carviz(Creatures):
     def __init__(self, lifetime=10):
@@ -252,6 +256,7 @@ class Carviz(Creatures):
                 movement_coordinates = self.findHerd(listOfPride)
 
         if np.array_equal(movement_coordinates, [self.row, self.column]) and self.kernel.size > 0:
-            movement_coordinates = self.kernel[np.random.choice(self.kernel.shape[0])]
+            movement_coordinates = self.kernel[np.random.choice(
+                self.kernel.shape[0])]
 
         return movement_coordinates
