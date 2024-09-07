@@ -1,4 +1,3 @@
-from Creatures import Vegetob, Erbast
 from Herd import Herd
 from Pride import Pride
 
