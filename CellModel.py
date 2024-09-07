@@ -40,7 +40,8 @@ class Cell:
         creature = self.erbast[0] if self.erbast else self.pride[0] if self.pride else None
         return creature.get_adjacent_cells(self.row, self.column) if creature else []
 
-    def _count_full_density_vegetobs(self, kernel, listOfVegetobs):
+    @staticmethod
+    def _count_full_density_vegetobs(kernel, listOfVegetobs):
         return sum(1 for row, col in kernel
                    if listOfVegetobs[row][col].vegetob and
                    listOfVegetobs[row][col].vegetob.density == 100)

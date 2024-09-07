@@ -23,11 +23,13 @@ class Herd(list):
             self._handle_erbast_movement(
                 erbast, movementCoords, herd_coords, cellsList)
 
-    def _calculate_social_attitude(self, population, energy):
+    @staticmethod
+    def _calculate_social_attitude(population, energy):
         populationInvers = 100 - population if population != 100 else 1
         return populationInvers * energy / 100
 
-    def _handle_erbast_movement(self, erbast, movementCoords, herd_coords, cellsList):
+    @staticmethod
+    def _handle_erbast_movement(erbast, movementCoords, herd_coords, cellsList):
         if np.array_equal(movementCoords, herd_coords):
             erbast.hasMoved = False
         else:
@@ -60,12 +62,14 @@ class Herd(list):
         else:
             self._graze_all_erbasts(energy_to_eat, listOfCells)
 
-    def _graze_starving_erbasts(self, starving_erbasts, erbasts_in_cell, energy_to_eat, listOfCells):
+    @staticmethod
+    def _graze_starving_erbasts(starving_erbasts, erbasts_in_cell, energy_to_eat, listOfCells):
         for erb_idx in starving_erbasts:
             if erb_idx < len(erbasts_in_cell):
                 erbasts_in_cell[erb_idx].graze(listOfCells, energy_to_eat)
 
-    def _graze_limited_erbasts(self, vegetob_density, erbasts_in_cell, energy_to_eat, listOfCells):
+    @staticmethod
+    def _graze_limited_erbasts(vegetob_density, erbasts_in_cell, energy_to_eat, listOfCells):
         for erb_idx in range(vegetob_density):
             if erb_idx < len(erbasts_in_cell):
                 erbasts_in_cell[erb_idx].graze(listOfCells, energy_to_eat)
