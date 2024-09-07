@@ -19,6 +19,7 @@ sys.path.append(".")
 mplstyle.use(['ggplot', 'fast'])
 plt.switch_backend('TkAgg')
 
+
 class SimulationView:
     def __init__(self):
         self._initialize_simulation_parameters()
@@ -53,19 +54,24 @@ class SimulationView:
 
     def _setup_plots(self):
         plt.style.use('default')
-        self.cmap = colors.ListedColormap(['blue', 'green', 'gray', 'brown', 'black'])
+        self.cmap = colors.ListedColormap(
+            ['blue', 'green', 'gray', 'brown', 'black'])
         self.bounds = [0, 10, 20, 30, 40, 50]
         self.norm = colors.BoundaryNorm(self.bounds, self.cmap.N)
         self.fig, (self.ax1, self.ax2) = plt.subplots(1, 2, figsize=(10, 5))
         self._setup_axes()
-        self.im = self.ax1.imshow(self.colorsList, cmap=self.cmap, norm=self.norm)
+        self.im = self.ax1.imshow(
+            self.colorsList, cmap=self.cmap, norm=self.norm)
 
     def _setup_axes(self):
         self.ax1.minorticks_off()
         self.ax2.minorticks_off()
-        self.line_erb = self.ax2.plot(self.x_data, self.y_erb_data, color='gray', label='Erbast')
-        self.line_car = self.ax2.plot(self.x_data, self.y_car_data, color='brown', label='Carviz')
-        self.fig.subplots_adjust(bottom=0.35, top=0.95, left=0.1, right=0.9, wspace=0.3)
+        self.line_erb = self.ax2.plot(
+            self.x_data, self.y_erb_data, color='gray', label='Erbast')
+        self.line_car = self.ax2.plot(
+            self.x_data, self.y_car_data, color='brown', label='Carviz')
+        self.fig.subplots_adjust(
+            bottom=0.35, top=0.95, left=0.1, right=0.9, wspace=0.3)
 
     def _setup_ui_elements(self):
         self._setup_textboxes()
@@ -80,11 +86,13 @@ class SimulationView:
         ]
         self.textboxes = []
         for i, (label, initial) in enumerate(textbox_params):
-            ax = self.fig.add_axes([0.15 if i < 4 else 0.6, 0.25 - 0.05 * (i % 4), 0.25, 0.03])
+            ax = self.fig.add_axes(
+                [0.15 if i < 4 else 0.6, 0.25 - 0.05 * (i % 4), 0.25, 0.03])
             self.textboxes.append(TextBox(ax, label, initial=initial))
 
     def _setup_buttons(self):
-        button_params = [('Start', 0.3), ('Pause/Resume', 0.45), ('Reset', 0.6)]
+        button_params = [
+            ('Start', 0.3), ('Pause/Resume', 0.45), ('Reset', 0.6)]
         self.buttons = []
         for label, pos in button_params:
             ax = self.fig.add_axes([pos, 0.05, 0.1, 0.04])
@@ -96,19 +104,24 @@ class SimulationView:
         self.buttons[2].on_clicked(self.reset_animation)
 
     def _initialize_simulation_data(self):
-        self.cellsList = np.empty((self.num_cells, self.num_cells), dtype=object)
-        self.water_cells = np.zeros((self.num_cells, self.num_cells), dtype=bool)
+        self.cellsList = np.empty(
+            (self.num_cells, self.num_cells), dtype=object)
+        self.water_cells = np.zeros(
+            (self.num_cells, self.num_cells), dtype=bool)
         self.colorsList = np.zeros((self.num_cells, self.num_cells))
 
     def _initialize_animation(self):
-        self.animation = FuncAnimation(self.fig, self.update, interval=self.interval, save_count=200)
+        self.animation = FuncAnimation(
+            self.fig, self.update, interval=self.interval, save_count=200)
         self.animation.pause()
 
     def setup_animation_values(self):
         self.interval, self.num_cells, self.num_car, self.car_lifetime, \
-        self.num_erb, self.erb_lifetime, self.water_scale = [int(float(tb.text)) for tb in self.textboxes]
+            self.num_erb, self.erb_lifetime, self.water_scale = [
+                int(float(tb.text)) for tb in self.textboxes]
         self._initialize_simulation_data()
-        self.im = self.ax1.imshow(self.colorsList, cmap=self.cmap, norm=self.norm)
+        self.im = self.ax1.imshow(
+            self.colorsList, cmap=self.cmap, norm=self.norm)
 
     def initialize_cells_list(self):
         Creatures.update_num_cells(self.num_cells)
@@ -119,7 +132,8 @@ class SimulationView:
         scale = self.water_scale
         for i in range(self.num_cells):
             for j in range(self.num_cells):
-                noise_value = noise.pnoise2(i / scale, j / scale, octaves=6, persistence=0.5, lacunarity=2.0, repeatx=self.num_cells, repeaty=self.num_cells)
+                noise_value = noise.pnoise2(i / scale, j / scale, octaves=6, persistence=0.5,
+                                            lacunarity=2.0, repeatx=self.num_cells, repeaty=self.num_cells)
                 vg = Vegetob()
                 vg.row, vg.column = i, j
                 vg.density = vg.generateDensity()
@@ -182,7 +196,8 @@ class SimulationView:
         self.pop_car.append(np.concatenate([prev_car_pop, new_car_pop]))
         self.y_erb_data, self.y_car_data = self.pop_erb[-1], self.pop_car[-1]
         self.y_hunt_data.append(self.hunt_counter)
-        self.x_erb_data, self.x_car_data = np.arange(len(self.pop_erb)), np.arange(len(self.pop_car))
+        self.x_erb_data, self.x_car_data = np.arange(
+            len(self.pop_erb)), np.arange(len(self.pop_car))
 
     def _update_plots(self):
         self._update_main_plot()
@@ -190,8 +205,10 @@ class SimulationView:
 
     def _update_main_plot(self):
         self.im.set_array(self.colorsList)
-        centuries, decades, years, months = self.day // 1000, (self.day % 1000) // 100, (self.day % 100) // 10, self.day % 10
-        title_parts = [f"{centuries} Centuries" if centuries > 0 else "", f"{decades} Decades" if decades > 0 else "", f"{years} Years" if years > 0 else "", f"{months} Months" if months > 0 else ""]
+        centuries, decades, years, months = self.day // 1000, (
+            self.day % 1000) // 100, (self.day % 100) // 10, self.day % 10
+        title_parts = [f"{centuries} Centuries" if centuries > 0 else "", f"{decades} Decades" if decades >
+                       0 else "", f"{years} Years" if years > 0 else "", f"{months} Months" if months > 0 else ""]
         title = ", ".join(filter(None, title_parts))
         self.ax1.set_title(title)
         self.ax1.title.set_fontsize(8)
@@ -210,7 +227,8 @@ class SimulationView:
         self.hunt_tot = sum(self.y_hunt_data)
         self.ax2.set_xlabel('Days', fontsize=8)
         self.ax2.set_ylabel('Population', fontsize=8)
-        self.ax2.set_title(f'\n\n Max Carviz: {self.car_max}      Max Erbast: {self.erb_max}      Cur Carviz: {self.car_counter}      Cur Erbast: {self.erb_counter}      Tot Kills: {self.hunt_tot}')
+        self.ax2.set_title(
+            f'\n\n Max Carviz: {self.car_max}      Max Erbast: {self.erb_max}      Cur Carviz: {self.car_counter}      Cur Erbast: {self.erb_counter}      Tot Kills: {self.hunt_tot}')
         self.ax2.title.set_fontsize(8)
 
     def _check_simulation_end(self):
@@ -276,16 +294,17 @@ class SimulationView:
     def _populate_erbast(self):
         for _ in range(self.num_erb):
             erb = Erbast(lifetime=self.erb_lifetime)
-            self._place_creature(erb, self.cellsList, 'erbast', check_empty=True)
+            self._place_creature(erb, self.cellsList,
+                                 'erbast', check_empty=True)
 
     def _place_creature(self, creature, cellsList, attribute, check_empty=False):
         creature_placed = False
         while not creature_placed:
             row = random.randint(0, self.num_cells - 1)
             column = random.randint(0, self.num_cells - 1)
-            if (row < self.num_cells and column < self.num_cells and 
-                row < len(cellsList) and column < len(cellsList[row]) and 
-                cellsList[row][column].terrainType != "Water"):
+            if (row < self.num_cells and column < self.num_cells and
+                row < len(cellsList) and column < len(cellsList[row]) and
+                    cellsList[row][column].terrainType != "Water"):
                 if check_empty and len(getattr(cellsList[row][column], attribute)) > 0:
                     continue
                 creature.row = row

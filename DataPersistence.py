@@ -1,9 +1,10 @@
 from constants import GREEN, RESET
 import pickle
 
+
 class DataPersistence:
 
-    def __init__(self, interval, num_cells, num_carviz, num_erbast, lft_carviz, lft_erbast, 
+    def __init__(self, interval, num_cells, num_carviz, num_erbast, lft_carviz, lft_erbast,
                  scl_water, run_flag, title, car_max, erb_max, hunt_tot):
         self.interval = interval
         self.num_cells = num_cells
