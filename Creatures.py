@@ -97,7 +97,7 @@ class Erbast(Creatures):
             if np.array_equal(movement_coordinates, [self.row, self.column]):
                 if listOfHerd[self.row][self.column].vegetob.density >= 35:
                     return np.array([self.row, self.column])
-                elif len(self.kernel) > 0:
+                if len(self.kernel) > 0:
                     return np.array(self.kernel[np.random.randint(0, len(self.kernel))])
         else:
             movement_coordinates = self.findFood(listOfHerd)
