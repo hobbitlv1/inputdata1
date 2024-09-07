@@ -250,8 +250,8 @@ class Carviz(Creatures):
                 movement_coordinates = self.findPride(listOfPride)
             else:
                 movement_coordinates = self.findHerd(listOfPride)
-        
+
         if np.array_equal(movement_coordinates, [self.row, self.column]) and self.kernel.size > 0:
             movement_coordinates = self.kernel[np.random.choice(self.kernel.shape[0])]
-        
+
         return movement_coordinates

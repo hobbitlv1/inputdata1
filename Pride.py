@@ -79,7 +79,7 @@ class Pride(list):
         population = cellsList[self.row][self.column].lenOfErbast()
         social_attitude = self._calculate_individual_social_attitude(carv, cellsList)
         movement_coords = carv.decideMovement(cellsList, social_attitude >= 50)
-        
+
         if np.array_equal(movement_coords, [self.row, self.column]):
             carv.hasMoved = False
         else:
