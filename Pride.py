@@ -19,7 +19,8 @@ class Pride(list):
             for carviz in pride_obj
         ]
 
-    def _calculate_individual_social_attitude(self, carviz, cellsList):
+    @staticmethod
+    def _calculate_individual_social_attitude(carviz, cellsList):
         population = cellsList[carviz.row][carviz.column].lenOfCarviz()
         population_inverse = 1 if population == 100 else 100 - population
         return population_inverse * carviz.energy / 100
@@ -38,7 +39,8 @@ class Pride(list):
 
         return self._create_new_pride(remaining_prides)
 
-    def _group_carviz_into_prides(self, carviz_list):
+    @staticmethod
+    def _group_carviz_into_prides(carviz_list):
         prides_dict = defaultdict(lambda: Pride(0, 0))
         for carviz in carviz_list:
             prides_dict[carviz.previouslyVisited].append(carviz)
@@ -47,7 +49,8 @@ class Pride(list):
     def _calculate_median_social_attitudes(self, prides, cellsList):
         return [statistics.median(self.calculate_social_attitude(pride, cellsList)) for pride in prides]
 
-    def _determine_winner(self, median_social_attitudes):
+    @staticmethod
+    def _determine_winner(median_social_attitudes):
         return random.choices(range(len(median_social_attitudes)), k=1)[0]
 
     def _join_prides_if_possible(self, prides, cellsList):
@@ -85,7 +88,8 @@ class Pride(list):
         else:
             carv.move(cellsList, movement_coords)
 
-    def prideMove(self, group, listOfCells, coordinates):
+    @staticmethod
+    def prideMove(group, listOfCells, coordinates):
         for carv in group:
             carv.move(listOfCells, coordinates)
 

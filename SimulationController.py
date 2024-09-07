@@ -12,19 +12,22 @@ class SimulationController:
         self._handle_creature_actions(cellsList)
         self._handle_creature_aging(cellsList)
 
-    def _grow_vegetob(self, cellsList):
+    @staticmethod
+    def _grow_vegetob(cellsList):
         for sublist in cellsList:
             for cell in sublist:
                 if cell.terrainType != "Water":
                     cell.vegetob.grow()
 
-    def _handle_creature_death(self, cellsList):
+    @staticmethod
+    def _handle_creature_death(cellsList):
         for row in cellsList:
             for cell in row:
                 if cell.erbast or cell.pride:
                     cell.death_from_vegetob(cellsList)
 
-    def _handle_creature_decisions(self, cellsList):
+    @staticmethod
+    def _handle_creature_decisions(cellsList):
         for row in cellsList:
             for cell in row:
                 if cell.erbast:
@@ -32,13 +35,15 @@ class SimulationController:
                 if cell.pride:
                     cell.pride.prideDecision(cellsList)
 
-    def _handle_pride_fights(self, cellsList):
+    @staticmethod
+    def _handle_pride_fights(cellsList):
         for row in cellsList:
             for cell in row:
                 if cell.pride:
                     cell.pride.fight_between_prides(cell.pride, cellsList)
 
-    def _handle_creature_actions(self, cellsList):
+    @staticmethod
+    def _handle_creature_actions(cellsList):
         for row in cellsList:
             for cell in row:
                 if cell.erbast:
@@ -48,7 +53,8 @@ class SimulationController:
                         if cell.erbast:
                             carviz.hunt(cellsList)
 
-    def _handle_creature_aging(self, cellsList):
+    @staticmethod
+    def _handle_creature_aging(cellsList):
         for row in cellsList:
             for cell in row:
                 if cell.erbast:

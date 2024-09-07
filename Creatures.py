@@ -13,7 +13,8 @@ class Creatures:
     def update_num_cells(cls, num_cells):
         cls.NUM_CELLS = num_cells
 
-    def get_adjacent_cells(self, row, col):
+    @staticmethod
+    def get_adjacent_cells(row, col):
         adjacent_cells = []
         max_row, max_col = Creatures.NUM_CELLS, Creatures.NUM_CELLS
         for i in range(row - 1, row + 2):
@@ -51,7 +52,8 @@ class Vegetob(Creatures):
     def density(self, newDensity):
         self._density = int(newDensity)
 
-    def generateDensity(self):
+    @staticmethod
+    def generateDensity():
         return np.random.randint(1, 100)
 
     def grow(self):
