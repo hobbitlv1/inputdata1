@@ -252,7 +252,8 @@ class SimulationView(QMainWindow):
                 vg.density = vg.generate_density()
                 self.grid[i, j] = Cell(i, j, "Ground", vg)
 
-    def _distribute_water_cells(self, total_cells, num_bodies):
+    @staticmethod
+    def _distribute_water_cells(total_cells, num_bodies):
         sizes = [
             random.randint(1, total_cells // num_bodies)
             for _ in range(num_bodies)
