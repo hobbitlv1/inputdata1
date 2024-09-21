@@ -1,7 +1,8 @@
-import pickle
+import json
 from dataclasses import dataclass, asdict
 from typing import Dict, Any
 import os
+import numpy as np
 
 
 @dataclass
@@ -24,13 +25,24 @@ class SimulationResults:
     total_hunts: int
 
 
+class NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return super(NumpyEncoder, self).default(obj)
+
+
 class SimulationDataManager:
     def __init__(
         self, params: SimulationParameters, results: SimulationResults
     ):
         self.parameters = params
         self.results = results
-        self.data_file = "simulation_data.pickle"
+        self.data_file = "simulation_data.json"
 
     def save_simulation_data(self):
         simulation_data = {
@@ -39,32 +51,32 @@ class SimulationDataManager:
         }
 
         existing_data = self._load_existing_data()
-        updated_data = {**existing_data, **simulation_data}
+        existing_data.append(simulation_data)
 
-        self._write_data_to_file(updated_data)
+        self._write_data_to_file(existing_data)
         print(
             f"{self._color_text('green')}Simulation data saved successfully."
             f"{self._color_text('reset')}\n"
         )
 
-    def _load_existing_data(self) -> Dict[str, Any]:
+    def _load_existing_data(self) -> list:
         if not os.path.exists(self.data_file):
-            return {}
+            return []
 
         try:
-            with open(self.data_file, 'rb') as file:
-                data = pickle.load(file)
-                return data if isinstance(data, dict) else {}
-        except (pickle.UnpicklingError, ModuleNotFoundError, AttributeError):
+            with open(self.data_file, 'r') as file:
+                data = json.load(file)
+                return data if isinstance(data, list) else []
+        except json.JSONDecodeError:
             print(
-                f"{self._color_text('yellow')}Warning: Unable to load existing data."
-                f" Starting with fresh data.{self._color_text('reset')}"
+                f"{self._color_text('yellow')}Warning: Unable to load existing data. "
+                f"Starting with fresh data.{self._color_text('reset')}"
             )
-            return {}
+            return []
 
-    def _write_data_to_file(self, data: Dict[str, Any]):
-        with open(self.data_file, "wb") as file:
-            pickle.dump(data, file)
+    def _write_data_to_file(self, data: list):
+        with open(self.data_file, "w") as file:
+            json.dump(data, file, indent=2, cls=NumpyEncoder)
 
     def load_and_display_data(self):
         self.content = self._load_existing_data()
