@@ -1,7 +1,5 @@
 class SimulationController:
-    """
-    SimulationController class manages the simulation steps.
-    """
+    """SimulationController class manages the simulation steps."""
 
     def simulate(self, cells_list):
         self._grow_vegetob(cells_list)

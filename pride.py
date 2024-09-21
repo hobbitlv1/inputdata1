@@ -5,9 +5,7 @@ from collections import defaultdict
 
 
 class Pride(list):
-    """
-    Pride class inherits from list to store Carviz entities in the same cell.
-    """
+    """Pride class inherits from list to store Carviz entities in the same cell."""
 
     def __init__(self, row, column):
         super().__init__()

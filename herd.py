@@ -111,8 +111,6 @@ class Herd(list):
             erb.graze(list_of_cells, energy_to_eat)
 
     def group_aging(self):
-        """
-        Calls aging for all Erbasts in the herd.
-        """
+        """Calls aging for all Erbasts in the herd."""
         for erb in self:
             erb.aging(self)
