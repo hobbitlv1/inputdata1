@@ -36,38 +36,65 @@ from simulation_data_manager import (
 class SimulationView(QMainWindow):
     def __init__(self):
         super().__init__()
+        
+        # Initialize all attributes
+        self.max_days = None
+        self.erbast_lifespan = None
+        self.carviz_lifespan = None
+        self.grid_size = None
+        self.current_day = 0
+        self.erbast_count = 0
+        self.carviz_count = 0
+        self.hunt_count = 0
+        self.time_data = [0]
+        self.erbast_population_data = [0]
+        self.carviz_population_data = [0]
+        self.hunt_data = [0]
+        self.erbast_population_history = [self.erbast_population_data]
+        self.carviz_population_history = [self.carviz_population_data]
+        self.carviz_peak = 0
+        self.erbast_peak = 0
+        self.total_hunts = 0
+        self.initial_carviz = None
+        self.initial_erbast = None
+        self.water_density = None
+        self.simulation_active = True
+        self.simulation_started = False
+        self.animation_paused = True
+        self.frame_interval = None
+        self.simulation_completed = False
+        
+        self.grid = None
+        self.water_map = None
+        self.color_map = None
+        
+        self.color_palette = None
+        self.color_norm = None
+        self.erbast_color = None
+        self.carviz_color = None
+        
+        self.fig = None
+        self.canvas = None
+        self.terrain_ax = None
+        self.population_ax = None
+        self.terrain_plot = None
+        self.erbast_line = None
+        self.carviz_line = None
+        
+        self.animation_timer = None
+        self.simulation_controller = None
+        self.state_manager = None
+        
+        self.input_fields = []
+        self.control_buttons = []
+        self.stats_label = None
+        
+        # Call initialization methods
         self._initialize_simulation()
         self._setup_color_palette()
         self._setup_ui()
         self.simulation_controller = SimulationController()
         self._create_animation()
-
-    def _initialize_simulation(self):
-        self._set_default_parameters()
-        self._initialize_data_structures()
-
-    def _set_default_parameters(self):
-        self.max_days = MAX_DAYS
-        self.erbast_lifespan = MAX_LIFE_E
-        self.carviz_lifespan = MAX_LIFE_C
-        self.grid_size = GRID_SIZE
-        self.current_day = 0
-        self.erbast_count = self.carviz_count = self.hunt_count = 0
-        self.time_data = [0]
-        self.erbast_population_data = [self.erbast_count]
-        self.carviz_population_data = [self.carviz_count]
-        self.hunt_data = [self.hunt_count]
-        self.erbast_population_history = [self.erbast_population_data]
-        self.carviz_population_history = [self.carviz_population_data]
-        self.carviz_peak = self.erbast_peak = self.total_hunts = 0
-        self.initial_carviz = 10
-        self.initial_erbast = 20
-        self.water_density = 15
-        self.simulation_active = True
-        self.simulation_started = False
-        self.animation_paused = True
-        self.frame_interval = 50
-        self.simulation_completed = False
 
     def _initialize_data_structures(self):
         self.grid = np.empty((self.grid_size, self.grid_size), dtype=object)
