@@ -36,7 +36,7 @@ from simulation_data_manager import (
 class SimulationView(QMainWindow):
     def __init__(self):
         super().__init__()
-        
+
         # Initialize all attributes
         self.max_days = None
         self.erbast_lifespan = None
@@ -63,16 +63,16 @@ class SimulationView(QMainWindow):
         self.animation_paused = True
         self.frame_interval = None
         self.simulation_completed = False
-        
+
         self.grid = None
         self.water_map = None
         self.color_map = None
-        
+
         self.color_palette = None
         self.color_norm = None
         self.erbast_color = None
         self.carviz_color = None
-        
+
         self.fig = None
         self.canvas = None
         self.terrain_ax = None
@@ -80,15 +80,15 @@ class SimulationView(QMainWindow):
         self.terrain_plot = None
         self.erbast_line = None
         self.carviz_line = None
-        
+
         self.animation_timer = None
         self.simulation_controller = None
         self.state_manager = None
-        
+
         self.input_fields = []
         self.control_buttons = []
         self.stats_label = None
-        
+
         # Call initialization methods
         self._initialize_simulation()
         self._setup_color_palette()
